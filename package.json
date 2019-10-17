@@ -19,28 +19,29 @@
   "author": "roger deutsch",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^6.0.12"
-  },
-  "dependencies": {
+    "electron": "^6.0.12",
     "electron-builder": "^21.2.0"
   },
+  "dependencies": {
+
+  },
   "build": {
-      "appId": "app.actionmobile.crypto",
-      "copyright": "Copyright © 2019 Roger Deutsch",
-      "productName": "Crypto",
-      "electronVersion": "6.0.10",
-      "asar": true,
-      "directories": {
-          "output": "dist",
-          "buildResources": "build"
-      },
-      "linux": {
-          "category": "Utility",
-          "icon": "crypto.png",
-          "executableName": "crypto"
-      },
-      "win":{
-          "icon": "build/crypto.png"
-      }
+    "appId": "app.actionmobile.crypto",
+    "copyright": "Copyright © 2019 Roger Deutsch",
+    "productName": "Crypto",
+    "electronVersion": "6.0.10",
+    "asar": true,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "linux": {
+      "category": "Utility",
+      "icon": "crypto.png",
+      "executableName": "crypto"
+    },
+    "win": {
+      "icon": "build/crypto.png"
+    }
   }
 }
