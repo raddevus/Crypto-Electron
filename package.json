@@ -8,12 +8,12 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
-  "repository": "https://CHANGE-TO-YOUR-GITHUB-URL",
+  "repository": "https://github.com/raddevus/Crypto-Electron",
   "keywords": [
     "Electron",
     "crypto",
     "encryption",
-    "tutorial",
+    "prototype",
     "demo"
   ],
   "author": "roger deutsch",
