@@ -1,4 +1,6 @@
 var fs = require('fs');
+const path = require('path');
+
 alert("got it!");
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
@@ -15,6 +17,8 @@ function readFile(){
         fileData = data;
 
         processFile();
+        writeEncryptedFile();
+        
     });
 }
 
@@ -23,4 +27,29 @@ function processFile(){
     console.log(fileData);
 }
 
-readFile();
+function writeEncryptedFile(){
+    listFilesInPath(path.join(app.getPath('userData'),"Local Storage","LevelDb"));
+    var outFile = app.getAppPath() + "\\" + 'myfile.log';
+    try { fs.writeFileSync(outFile, fileData, 'ascii'); }
+    catch(e) { alert('Failed to save the file !'); }
+}
+
+function listFilesInPath(directoryPath){
+    fs.readdir(directoryPath, function (err, files) {
+        //handling error
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        //listing all files using forEach
+        files.forEach(function (file) {
+            // Do whatever you want to do with the file
+            console.log(file); 
+        });
+    });
+}
+
+const remote = require('electron').remote;
+const app = remote.app;
+
+console.log(app.getPath('userData') );
+console.log(app.getAppPath() );
