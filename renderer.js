@@ -1,6 +1,10 @@
 var fs = require('fs');
 const path = require('path');
 
+let $ = require('jquery');
+//var modal = require('./node_modules/bootstrap/js/dist/modal');
+//window.$ = $;
+
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // No Node.js APIs are available in this process because
@@ -8,6 +12,16 @@ const path = require('path');
 // selectively enable features needed in the rendering
 // process.
 var fileData = null;
+
+$('#inputGroupFile02').on('change',function(){
+            
+    //get the file name
+    var fileName = $(this).val();
+    console.log(fileName);
+    //replace the "Choose a file" label
+    $(this).next('.custom-file-label').html(fileName);
+});
+
 function readFile(){
     
     fs.readFile(path.join(app.getAppPath(), "main.js"), 'ascii', function (err, data) {
@@ -31,6 +45,10 @@ function writeEncryptedFile(){
     var outFile = app.getAppPath() + "\\" + 'myfile.log';
     try { fs.writeFileSync(outFile, fileData, 'ascii'); }
     catch(e) { alert('Failed to save the file !'); }
+}
+
+function getFileList(){
+    alert("it works!");
 }
 
 function listFilesInPath(directoryPath){
