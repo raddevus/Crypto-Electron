@@ -1,7 +1,6 @@
 var fs = require('fs');
 const path = require('path');
 
-alert("got it!");
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // No Node.js APIs are available in this process because
@@ -11,7 +10,7 @@ alert("got it!");
 var fileData = null;
 function readFile(){
     
-    fs.readFile("C:\\Users\\roger.deutsch\\AppData\\Roaming\\C'YaPass\\Local Storage\\leveldb\\000006.log", 'ascii', function (err, data) {
+    fs.readFile(path.join(app.getAppPath(), "main.js"), 'ascii', function (err, data) {
         if (err) return console.log(err);
         console.log("read the file!");
         fileData = data;
@@ -28,7 +27,7 @@ function processFile(){
 }
 
 function writeEncryptedFile(){
-    listFilesInPath(path.join(app.getPath('userData'),"Local Storage","LevelDb"));
+    listFilesInPath(path.join(app.getPath('userData'),"Local Storage","leveldb"));
     var outFile = app.getAppPath() + "\\" + 'myfile.log';
     try { fs.writeFileSync(outFile, fileData, 'ascii'); }
     catch(e) { alert('Failed to save the file !'); }
@@ -41,12 +40,19 @@ function listFilesInPath(directoryPath){
             return console.log('Unable to scan directory: ' + err);
         } 
         //listing all files using forEach
-        files.forEach(function (file) {
+        files.filter(filterOnExtension).forEach(function (file) {
             // Do whatever you want to do with the file
             console.log(file); 
         });
     });
 }
+
+function filterOnExtension(element) {
+    var extName = path.extname(element);
+    console.log("==> " + element);
+    const extFilter = ".log";
+    return extName === extFilter; 
+  };
 
 const remote = require('electron').remote;
 const app = remote.app;
