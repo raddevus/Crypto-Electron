@@ -17,14 +17,15 @@
     </div>
     <div id="decrypted">
     </div>
-    <div class="input-group mb-3">
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inputGroupFile02"/>
-            <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
-        </div>
+    <div id="formBody" class="row">
+      <div class="col-sm-6" >
+      <select id="FileListBox" size="5">
+       
+      </select>
+      <button onclick="readFile()"class="btn btn-sm btn-outline-primary">Encrypt</button>
+      <button onclick="getFileList()"class="btn btn-sm btn-outline-primary">List Files</button>
+      </div>
     </div>
-    <input type="file">
-    <button onclick="readFile()"class="btn btn-sm btn-outline-primary">Encrypt</button>
     <script>
         var plainText = "This is a an extremely long message <strong> with </strong> CRLF \n and other items in it.";
         var key = CryptoJS.enc.Hex.parse('76CE9BBA9487266738E3C4F0B3CFA4BE0C0EBA52ED1C3C425E06900442EFE5E1'); 

@@ -5,23 +5,6 @@ let $ = require('jquery');
 //var modal = require('./node_modules/bootstrap/js/dist/modal');
 //window.$ = $;
 
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// No Node.js APIs are available in this process because
-// `nodeIntegration` is turned off. Use `preload.js` to
-// selectively enable features needed in the rendering
-// process.
-var fileData = null;
-
-$('#inputGroupFile02').on('change',function(){
-            
-    //get the file name
-    var fileName = $(this).val();
-    console.log(fileName);
-    //replace the "Choose a file" label
-    $(this).next('.custom-file-label').html(fileName);
-});
-
 function readFile(){
     
     fs.readFile(path.join(app.getAppPath(), "main.js"), 'ascii', function (err, data) {
@@ -42,13 +25,18 @@ function processFile(){
 
 function writeEncryptedFile(){
     listFilesInPath(path.join(app.getPath('userData'),"Local Storage","leveldb"));
-    var outFile = app.getAppPath() + "\\" + 'myfile.log';
+    var outFile = path.join(app.getAppPath(), 'myfile.log');
+    console.log(outFile);
     try { fs.writeFileSync(outFile, fileData, 'ascii'); }
     catch(e) { alert('Failed to save the file !'); }
 }
+var allFiles = [];
 
 function getFileList(){
-    alert("it works!");
+    
+    listFilesInPath(path.join(app.getPath('userData'),"Local Storage","leveldb"));
+    console.log(allFiles.length);
+    
 }
 
 function listFilesInPath(directoryPath){
@@ -61,6 +49,7 @@ function listFilesInPath(directoryPath){
         files.filter(filterOnExtension).forEach(function (file) {
             // Do whatever you want to do with the file
             console.log(file); 
+            // LATER - allFiles.push(file);
         });
     });
 }
@@ -68,6 +57,9 @@ function listFilesInPath(directoryPath){
 function filterOnExtension(element) {
     var extName = path.extname(element);
     console.log("==> " + element);
+    var localOption = new Option(element, element, false, true);
+    $('#FileListBox').append($(localOption) );
+    
     const extFilter = ".log";
     return extName === extFilter; 
   };
