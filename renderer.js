@@ -11,17 +11,25 @@ const app = remote.app;
 var levelDbDirectory = path.join(app.getPath('userData'),"Local Storage","leveldb");
 //var appsRootPath = app.getPath('appData');
 //documents, temp, appData, userData, ("C:\\windows\\system32\\"),
-var appsRootPath = app.getPath('appData');
+var specialFoldersPath = null;
 // ## The following is document.onload via jquery
 $(function() {
     $("#sourcePath").text(levelDbDirectory);
-    $("#appsRootPath").text(appsRootPath);
-    getSubPaths(appsRootPath);
-    
+    handleSpecialFoldersChange();
+    $("#specialFolders").change(function() {
+        handleSpecialFoldersChange();    
+    });
+
  });
 
+function handleSpecialFoldersChange(){
+    clearSelectList("#PathListBox");
+    specialFoldersPath = app.getPath($("#specialFolders").val());
+    $("#appsRootPath").text(specialFoldersPath);
+    getSubPaths(specialFoldersPath);
+}
+
 async function getSubPaths(path){
-    //removeAllFilesFromList();
     fs.readdir(path, function (err, files) {
         //handling error
         if (err) {
@@ -35,6 +43,7 @@ async function getSubPaths(path){
             $('#PathListBox').append($(localOption) );
             // LATER - allFiles.push(file);
         });
+        $("#PathListBox").val($("#PathListBox option:first").val());
     });
 }
 
@@ -73,15 +82,15 @@ function getFileList(){
     listFilesInPath(path.join(app.getPath('userData'),"Local Storage","leveldb"));
 }
 
-function removeAllFilesFromList(){
-$('#FileListBox')
-    .find('option')
-    .remove()
-    .end();
+function clearSelectList(targetElementSelector){
+    $(targetElementSelector)
+        .find('option')
+        .remove()
+        .end();
 }
 
 function listFilesInPath(directoryPath){
-    removeAllFilesFromList();
+    clearSelectList('#FileListBox');
     fs.readdir(directoryPath, function (err, files) {
         //handling error
         if (err) {
