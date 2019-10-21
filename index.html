@@ -17,7 +17,8 @@
     </div>
     <div id="decrypted">
     </div>
-    <select id="specialFolders">
+    <div class="form-group">
+    <select id="specialFolders" class="form-control">
         <option value="appData">appData</option>
         <option value="desktop">Desktop</option>
         <option value="documents">Documents</option>
@@ -29,18 +30,22 @@
         <option value="userData">userData</option>
         <option value="videos">Videos</option>
       </select>
+    </div>
     <h5 id="appsRootPath">placeholder</h5>
     <div id="formBody" class="row">
-        
         <div class="col-sm-8" >
-          <select id="PathListBox" class="RadListBox" size="5">
+          <select id="PathListBox" 
+            class="RadListBox form-control" 
+            size="5">
           </select>
         </div>
     </div>
     <h5 id="sourcePath"></h5>
     <div id="formBody" class="row">
       <div class="col-sm-8" >
-      <select id="FileListBox" class="RadListBox" size="5">
+      <select id="FileListBox" 
+        class="RadListBox form-control" 
+        size="5">
       </select>
       <button onclick="readFile()"class="btn btn-sm btn-outline-primary">Encrypt</button>
       <button onclick="getFileList()"class="btn btn-sm btn-outline-primary">List Files</button>
