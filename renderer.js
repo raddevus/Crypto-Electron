@@ -30,16 +30,20 @@ function writeEncryptedFile(){
     try { fs.writeFileSync(outFile, fileData, 'ascii'); }
     catch(e) { alert('Failed to save the file !'); }
 }
-var allFiles = [];
 
 function getFileList(){
-    
     listFilesInPath(path.join(app.getPath('userData'),"Local Storage","leveldb"));
-    console.log(allFiles.length);
-    
+}
+
+function removeAllFilesFromList(){
+$('#FileListBox')
+    .find('option')
+    .remove()
+    .end();
 }
 
 function listFilesInPath(directoryPath){
+    removeAllFilesFromList();
     fs.readdir(directoryPath, function (err, files) {
         //handling error
         if (err) {
@@ -49,6 +53,8 @@ function listFilesInPath(directoryPath){
         files.filter(filterOnExtension).forEach(function (file) {
             // Do whatever you want to do with the file
             console.log(file); 
+            var localOption = new Option(file, file, false, true);
+            $('#FileListBox').append($(localOption) );
             // LATER - allFiles.push(file);
         });
     });
@@ -57,8 +63,6 @@ function listFilesInPath(directoryPath){
 function filterOnExtension(element) {
     var extName = path.extname(element);
     console.log("==> " + element);
-    var localOption = new Option(element, element, false, true);
-    $('#FileListBox').append($(localOption) );
     
     const extFilter = ".log";
     return extName === extFilter; 
