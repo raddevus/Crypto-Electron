@@ -1,3 +1,4 @@
 @import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
-#FileListBox{width:100%;}
+.RadListBox{width:100%;}
 .topPad{margin-top: 7px;}
+body {padding: 8px 5px 5px 5px;}

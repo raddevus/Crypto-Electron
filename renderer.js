@@ -9,11 +9,34 @@ const remote = require('electron').remote;
 const app = remote.app;
 
 var levelDbDirectory = path.join(app.getPath('userData'),"Local Storage","leveldb");
-
+//var appsRootPath = app.getPath('appData');
+//documents, temp, appData, userData, ("C:\\windows\\system32\\"),
+var appsRootPath = app.getPath('appData');
 // ## The following is document.onload via jquery
 $(function() {
     $("#sourcePath").text(levelDbDirectory);
+    $("#appsRootPath").text(appsRootPath);
+    getSubPaths(appsRootPath);
+    
  });
+
+async function getSubPaths(path){
+    //removeAllFilesFromList();
+    fs.readdir(path, function (err, files) {
+        //handling error
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        //listing all files using forEach
+        files.forEach(function (file) {
+            // Do whatever you want to do with the file
+            console.log(file); 
+            var localOption = new Option(file, file, false, true);
+            $('#PathListBox').append($(localOption) );
+            // LATER - allFiles.push(file);
+        });
+    });
+}
 
 function readFile(){
     var currentSelectedFile = $('#FileListBox').val();
