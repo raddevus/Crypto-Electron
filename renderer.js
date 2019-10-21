@@ -9,7 +9,12 @@ const remote = require('electron').remote;
 const app = remote.app;
 
 var levelDbDirectory = path.join(app.getPath('userData'),"Local Storage","leveldb");
-$("#targetPath").val(levelDbDirectory);
+
+// ## The following is document.onload via jquery
+$(function() {
+    $("#sourcePath").text(levelDbDirectory);
+ });
+
 function readFile(){
     var currentSelectedFile = $('#FileListBox').val();
     if (currentSelectedFile == null){
