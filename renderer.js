@@ -5,16 +5,26 @@ let $ = require('jquery');
 //var modal = require('./node_modules/bootstrap/js/dist/modal');
 //window.$ = $;
 
+const remote = require('electron').remote;
+const app = remote.app;
+
+var levelDbDirectory = path.join(app.getPath('userData'),"Local Storage","leveldb");
+
 function readFile(){
+    var currentSelectedFile = $('#FileListBox').val();
+    if (currentSelectedFile == null){
+        return;
+    }
     
-    fs.readFile(path.join(app.getAppPath(), "main.js"), 'ascii', function (err, data) {
+    var fileFullName = path.join(levelDbDirectory, currentSelectedFile);
+    alert(fileFullName);
+    fs.readFile(fileFullName, 'ascii', function (err, data) {
         if (err) return console.log(err);
         console.log("read the file!");
         fileData = data;
 
         processFile();
         writeEncryptedFile();
-        
     });
 }
 
@@ -24,7 +34,7 @@ function processFile(){
 }
 
 function writeEncryptedFile(){
-    listFilesInPath(path.join(app.getPath('userData'),"Local Storage","leveldb"));
+    listFilesInPath(levelDbDirectory);
     var outFile = path.join(app.getAppPath(), 'myfile.log');
     console.log(outFile);
     try { fs.writeFileSync(outFile, fileData, 'ascii'); }
@@ -68,8 +78,6 @@ function filterOnExtension(element) {
     return extName === extFilter; 
   };
 
-const remote = require('electron').remote;
-const app = remote.app;
 
 console.log(app.getPath('userData') );
 console.log(app.getAppPath() );
