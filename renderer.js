@@ -26,8 +26,9 @@ $(function() {
  function getAllDirsButtonClick(){
      allDirs = getAllDirs(specialFoldersPath);
      for (let x = 0; x<allDirs.length;x++){
-         appendNewNode(allDirs[x]);
+         appendNewNode("#treeNode",allDirs[x]);
      }
+     handleToggle();
  }
 
  function getAllDirs(path){
@@ -37,9 +38,8 @@ $(function() {
       .map(dirent => dirent.name);
  }
 
- function appendNewNode(nodeName){
-    $("#treeNode").append("<li><span class=\"caret\">" + nodeName + "</span></li>");
-    handleToggle();
+ function appendNewNode(targetNode, nodeName){
+    $(targetNode).append("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>");
 }
 
 function handleToggle(){
@@ -48,13 +48,22 @@ function handleToggle(){
 
 for (i = 0; i < toggler.length; i++) {
   toggler[i].addEventListener("click", function() {
-      try{
-        this.parentElement.querySelector(".nested").classList.toggle("active");
-        this.classList.toggle("caret-down");
-        }
-        catch{
-              return;
-        }
+        try{
+            let subpath = path.join(specialFoldersPath,this.id);
+            
+            allDirs = getAllDirs(subpath);
+            if (allDirs.length>0){
+                //alert(allDirs[0]);
+                $("#"+this.id).append("<ul id=\"1xx-" + this.id + "\"></ul>");
+                appendNewNode("#"+"1xx-"+this.id, allDirs[0]);
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            }
+            
+            }
+            catch{
+                return;
+            }
         });
     }
 }
