@@ -43,4 +43,9 @@ ul, #treeNode {
   .active {
     display: block;
   }
+
+  .folderTree{
+    height: 100px;
+    overflow:auto;
+  }
 /* ############### END STYLES FROM https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_treeview  */

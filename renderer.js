@@ -26,9 +26,9 @@ $(function() {
  function getAllDirsButtonClick(){
      allDirs = getAllDirs(specialFoldersPath);
      for (let x = 0; x<allDirs.length;x++){
-         appendNewNode("#treeNode",allDirs[x]);
+         appendListNode("#treeNode",allDirs[x]);
      }
-     handleToggle();
+     handleToggle("");
  }
 
  function getAllDirs(path){
@@ -38,36 +38,44 @@ $(function() {
       .map(dirent => dirent.name);
  }
 
- function appendNewNode(targetNode, nodeName){
+ function appendListNode(targetNode, nodeName){
     $(targetNode).append("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>");
 }
 
-function handleToggle(){
-    var toggler = document.getElementsByClassName("caret");
-    var i;
-
-for (i = 0; i < toggler.length; i++) {
-  toggler[i].addEventListener("click", function() {
-        try{
-            let subpath = path.join(specialFoldersPath,this.id);
-            let localParent = null;
-            if ($("#"+this.id).hasClass("hasExpanded") == false){
-            $("#"+this.id).addClass("hasExpanded");
-            allDirs = getAllDirs(subpath);
-            
-            for (let k = 0;k <allDirs.length;k++){
-                //alert(allDirs[0]);
-                if (k == 0){
-                    $("#"+this.id).append("<ul id=\"" + allDirs[k] + "\" class=\"nested\"></ul>");
-                    localParent=allDirs[0];
-                }
-                appendNewNode("#"+ localParent, allDirs[k]);
+function addSubFoldersToParent(clickedElement,folder){
+    console.log("clickedElement.id :" + clickedElement.id);
+    let subpath = path.join(specialFoldersPath,clickedElement.id,folder);
+    let localParent = null;
+    if ($("#"+clickedElement.id).hasClass("hasExpanded") == false){
+    $("#"+clickedElement.id).addClass("hasExpanded");
+    console.log(subpath);
+    allDirs = getAllDirs(subpath);
+    console.log("allDirs.length: " + allDirs.length);
+    for (let k = 0;k <allDirs.length;k++){
+            if (k == 0){
+                localParent=clickedElement.id+k;
+                $("#"+clickedElement.id).append("<ul id=\"" + localParent + "\" class=\"nested\"></ul>");
             }
-            }
-            this.parentElement.querySelector(".nested").classList.toggle("active");
-            this.classList.toggle("caret-down");
+            appendListNode("#"+ localParent, allDirs[k]);
         }
-        catch{
+    }
+    clickedElement.parentElement.querySelector(".nested").classList.toggle("active");
+    clickedElement.classList.toggle("caret-down");
+    
+}
+
+function handleToggle(folder){
+    var toggler = document.getElementsByClassName("caret");
+    console.log("There are " + toggler.length + " toggler items.");
+    var i;
+    for (i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function() {
+            console.log("clicked...");
+            try{
+                //alert(this.id);
+                addSubFoldersToParent(this,folder);
+            }
+            catch{
                 return;
             }
         });
