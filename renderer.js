@@ -51,7 +51,8 @@ for (i = 0; i < toggler.length; i++) {
         try{
             let subpath = path.join(specialFoldersPath,this.id);
             let localParent = null;
-
+            if ($("#"+this.id).hasClass("hasExpanded") == false){
+            $("#"+this.id).addClass("hasExpanded");
             allDirs = getAllDirs(subpath);
             
             for (let k = 0;k <allDirs.length;k++){
@@ -61,9 +62,10 @@ for (i = 0; i < toggler.length; i++) {
                     localParent=allDirs[0];
                 }
                 appendNewNode("#"+ localParent, allDirs[k]);
-                this.parentElement.querySelector(".nested").classList.toggle("active");
-                this.classList.toggle("caret-down");
             }
+            }
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("caret-down");
         }
         catch{
                 return;
