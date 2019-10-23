@@ -20,15 +20,26 @@ $(function() {
     $("#specialFolders").change(function() {
         handleSpecialFoldersChange();    
     });
-
+    getInitialDirectories();
  });
  var allDirs = [];
- function getAllDirsButtonClick(){
+
+ function getInitialDirectories(){
+     $("#treeNode").empty();
      allDirs = getAllDirs(specialFoldersPath);
      for (let x = 0; x<allDirs.length;x++){
-         appendListNode("#treeNode",allDirs[x]);
+        appendListNode("#treeNode",allDirs[x]);
+    }
+ }
+
+ function getAllDirsButtonClick(elementSelector,folder){
+     var mainPath = path.join(specialFoldersPath,folder);
+     console.log(mainPath);
+     allDirs = getAllDirs(mainPath);
+     for (let x = 0; x<allDirs.length;x++){
+         appendListNode(elementSelector,allDirs[x]);
      }
-     handleToggle("");
+     handleToggle(folder);
  }
 
  function getAllDirs(path){
@@ -45,6 +56,7 @@ $(function() {
 function addSubFoldersToParent(clickedElement,folder){
     console.log("clickedElement.id :" + clickedElement.id);
     let subpath = path.join(specialFoldersPath,clickedElement.id,folder);
+    console.log(subpath);
     let localParent = null;
     if ($("#"+clickedElement.id).hasClass("hasExpanded") == false){
     $("#"+clickedElement.id).addClass("hasExpanded");
@@ -56,7 +68,7 @@ function addSubFoldersToParent(clickedElement,folder){
                 localParent=clickedElement.id+k;
                 $("#"+clickedElement.id).append("<ul id=\"" + localParent + "\" class=\"nested\"></ul>");
             }
-            appendListNode("#"+ localParent, allDirs[k]);
+            appendListNode("#"+ localParent, allDirs[k])
         }
     }
     clickedElement.parentElement.querySelector(".nested").classList.toggle("active");
@@ -87,6 +99,7 @@ function handleSpecialFoldersChange(){
     specialFoldersPath = app.getPath($("#specialFolders").val());
     $("#appsRootPath").text(specialFoldersPath);
     getSubPaths(specialFoldersPath);
+    getInitialDirectories();
 }
 
 async function getSubPaths(path){
