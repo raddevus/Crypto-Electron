@@ -17,6 +17,8 @@
     </div>
     <div id="decrypted">
     </div>
+    <ul id="treeNode">
+    </ul>
     <div class="form-group">
     <select id="specialFolders" class="form-control">
         <option value="appData">appData</option>
@@ -49,6 +51,7 @@
       </select>
       <button onclick="readFile()"class="btn btn-sm btn-outline-primary">Encrypt</button>
       <button onclick="getFileList()"class="btn btn-sm btn-outline-primary">List Files</button>
+      <button onclick="getAllDirsButtonClick()"class="btn btn-sm btn-outline-primary">Get Dirs</button>
       </div>
     </div>
     <script>

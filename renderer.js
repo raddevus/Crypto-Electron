@@ -1,5 +1,6 @@
 var fs = require('fs');
 const path = require('path');
+const { readdirSync } = require('fs')
 
 let $ = require('jquery');
 //var modal = require('./node_modules/bootstrap/js/dist/modal');
@@ -21,6 +22,42 @@ $(function() {
     });
 
  });
+ var allDirs = [];
+ function getAllDirsButtonClick(){
+     allDirs = getAllDirs(specialFoldersPath);
+     for (let x = 0; x<allDirs.length;x++){
+         appendNewNode(allDirs[x]);
+     }
+ }
+
+ function getAllDirs(path){
+    //const getDirectories = source =>
+    return readdirSync(path, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name);
+ }
+
+ function appendNewNode(nodeName){
+    $("#treeNode").append("<li><span class=\"caret\">" + nodeName + "</span></li>");
+    handleToggle();
+}
+
+function handleToggle(){
+    var toggler = document.getElementsByClassName("caret");
+    var i;
+
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+      try{
+        this.parentElement.querySelector(".nested").classList.toggle("active");
+        this.classList.toggle("caret-down");
+        }
+        catch{
+              return;
+        }
+        });
+    }
+}
 
 function handleSpecialFoldersChange(){
     clearSelectList("#PathListBox");
