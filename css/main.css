@@ -33,6 +33,8 @@ ul, #treeNode {
     -webkit-transform: rotate(90deg); /* Safari */
     transform: rotate(90deg);  
   }
+
+  ul .nested {background: lightblue; margin-left:-25px;}
   
   .nested {
     display: none;

@@ -54,14 +54,13 @@ for (i = 0; i < toggler.length; i++) {
             allDirs = getAllDirs(subpath);
             if (allDirs.length>0){
                 //alert(allDirs[0]);
-                $("#"+this.id).append("<ul id=\"1xx-" + this.id + "\"></ul>");
+                $("#"+this.id).append("<ul id=\"1xx-" + this.id + "\" class=\"nested\"></ul>");
                 appendNewNode("#"+"1xx-"+this.id, allDirs[0]);
                 this.parentElement.querySelector(".nested").classList.toggle("active");
                 this.classList.toggle("caret-down");
             }
-            
-            }
-            catch{
+        }
+        catch{
                 return;
             }
         });
