@@ -28,7 +28,38 @@ $(function() {
      $("#treeNode").empty();
      allDirs = getAllDirs(specialFoldersPath);
      for (let x = 0; x<allDirs.length;x++){
-        appendListNode("#treeNode",allDirs[x]);
+        appendListNode("#treeNode",allDirs[x])
+        .on("click", function() 
+        {   
+            let localParent = allDirs[x]+x;
+            
+            console.log("localParent : " + localParent);
+                $("#"+allDirs[x]).toggleClass("caret-down");
+                console.log(allDirs[x]);
+                let subdirs = getAllDirs(path.join(specialFoldersPath,allDirs[x]));
+                console.log(subdirs.length);
+                if ($("#"+allDirs[x]).hasClass("hasExpanded") == false){
+                    $("#"+localParent).addClass("hasExpanded");
+                    $("#" + allDirs[x]).addClass("hasExpanded");
+                    if (subdirs.length > 0){
+                        
+                        console.log("append...");
+                        $("#"+allDirs[x]).append("<ul id=\"" + localParent + "\" class=\"nested active\"></ul>");
+                    }
+                    for (let k = 0;k <subdirs.length;k++){
+                        appendListNode("#" + localParent,subdirs[k]);
+                        
+                    }
+                }
+                else{
+                $("#"+allDirs[x]).toggleClass("active");
+                $("#"+localParent).toggleClass("active");
+                }
+                
+            
+            //clickedElement.parentElement.querySelector(".nested").classList.toggle("active");
+            
+        });
     }
  }
 
@@ -50,7 +81,10 @@ $(function() {
  }
 
  function appendListNode(targetNode, nodeName){
-    $(targetNode).append("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>");
+    return ($("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>").appendTo(targetNode));
+    
+    //return ($(targetNode).append("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>"));
+    
 }
 
 function addSubFoldersToParent(clickedElement,folder){
