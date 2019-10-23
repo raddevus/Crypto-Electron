@@ -27,12 +27,15 @@ $(function() {
  function getInitialDirectories(){
      $("#treeNode").empty();
      allDirs = getAllDirs(specialFoldersPath);
-     for (let x = 0; x<allDirs.length;x++){
-        appendListNode("#treeNode",allDirs[x])
+     addSubsAndClickHandlers("#treeNode");
+ }
+
+ function addSubsAndClickHandlers(parentNodeSelector){
+    for (let x = 0; x<allDirs.length;x++){
+        appendListNode(parentNodeSelector,allDirs[x])
         .on("click", function() 
         {   
             let localParent = allDirs[x]+x;
-            
             console.log("localParent : " + localParent);
                 $("#"+allDirs[x]).toggleClass("caret-down");
                 console.log(allDirs[x]);
@@ -55,10 +58,6 @@ $(function() {
                 $("#"+allDirs[x]).toggleClass("active");
                 $("#"+localParent).toggleClass("active");
                 }
-                
-            
-            //clickedElement.parentElement.querySelector(".nested").classList.toggle("active");
-            
         });
     }
  }
