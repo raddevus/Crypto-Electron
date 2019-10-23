@@ -50,12 +50,17 @@ for (i = 0; i < toggler.length; i++) {
   toggler[i].addEventListener("click", function() {
         try{
             let subpath = path.join(specialFoldersPath,this.id);
-            
+            let localParent = null;
+
             allDirs = getAllDirs(subpath);
-            if (allDirs.length>0){
+            
+            for (let k = 0;k <allDirs.length;k++){
                 //alert(allDirs[0]);
-                $("#"+this.id).append("<ul id=\"1xx-" + this.id + "\" class=\"nested\"></ul>");
-                appendNewNode("#"+"1xx-"+this.id, allDirs[0]);
+                if (k == 0){
+                    $("#"+this.id).append("<ul id=\"" + allDirs[k] + "\" class=\"nested\"></ul>");
+                    localParent=allDirs[0];
+                }
+                appendNewNode("#"+ localParent, allDirs[k]);
                 this.parentElement.querySelector(".nested").classList.toggle("active");
                 this.classList.toggle("caret-down");
             }
