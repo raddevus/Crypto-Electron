@@ -23,12 +23,62 @@ $(function() {
     getInitialDirectories();
  });
  var allDirs = [];
-
+ var rootTreeNodes = [];
+ var folderId = 0;
  function getInitialDirectories(){
      $("#treeNode").empty();
      allDirs = getAllDirs(specialFoldersPath);
-     addSubsAndClickHandlers("#treeNode");
+     //addSubsAndClickHandlers("#treeNode");
+     rootTreeNodes = [];
+     let currentTreeNode = null;//new TreeNode({"parentId":null,"id":folderId++})
+     for (let zz = 0;zz < allDirs.length;zz++){
+        console.log(folderId);
+        currentTreeNode = new TreeNode({"parentId":null,"id":folderId++})
+        
+        currentTreeNode.addChildName(allDirs[zz].replace("\'", ""));
+        rootTreeNodes.push(currentTreeNode);
+     }
+     renderNodes(rootTreeNodes,"#treeNode");
  }
+
+ function renderNodes(nodes,targetNodeSelector){
+     console.log("nodes.length : " + nodes.length);
+    for (let x = 0;x < nodes.length;x++){
+        // nodes[x].allChildFolderNames[0]+
+        //targetName = nodes[x].allChildFolderNames[0];
+        let nodeSelector = "#"+nodes[x].allChildFolderNames[0];
+        $(targetNodeSelector).append("<ul id=\"" + nodes[x].allChildFolderNames[0] + "\" class=\"nested active\"></ul>");
+        appendListNode(nodeSelector,nodes[x].allChildFolderNames[0]).
+        on("click", function() 
+        {   
+            alert($(nodeSelector).id);
+        });
+    }
+ }
+
+ function addNewListHtml(){
+
+ }
+
+ function appendListNode(targetNode, nodeName){
+     console.log("targetName : " + targetNode);
+    return ($("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>").appendTo(targetNode));
+    
+    //return ($(targetNode).append("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>"));
+ }
+ 
+
+ function addNodeClickHandler(nodeSelector){
+    $(nodeSelector).on("click", function() 
+        {   
+            alert($(nodeSelector).id);
+        });
+ }
+
+ function nodeClickHandler(){
+
+ }
+
 
  function addSubsAndClickHandlers(parentNodeSelector){
     for (let x = 0; x<allDirs.length;x++){
@@ -79,12 +129,6 @@ $(function() {
       .map(dirent => dirent.name);
  }
 
- function appendListNode(targetNode, nodeName){
-    return ($("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>").appendTo(targetNode));
-    
-    //return ($(targetNode).append("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>"));
-    
-}
 
 function addSubFoldersToParent(clickedElement,folder){
     console.log("clickedElement.id :" + clickedElement.id);
