@@ -5,6 +5,7 @@
     <title>Crypto-Electron</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script src="js/aes.js"></script>
+
   </head>
   <body>
     <div>
@@ -17,10 +18,8 @@
     </div>
     <div id="decrypted">
     </div>
-    <div>
-      <ul id="treeNode" class="folderTree">
-      </ul>
-    </div>
+    <button class="btn btn-sm btn-outline-primary" onclick="ipc.send('open-file-dialog')">Select File</button>
+    <div id="selected-file"></div>
     <div class="form-group">
     <select id="specialFolders" class="form-control">
         <option value="appData">appData</option>
@@ -53,7 +52,7 @@
       </select>
       <button onclick="readFile()"class="btn btn-sm btn-outline-primary">Encrypt</button>
       <button onclick="getFileList()"class="btn btn-sm btn-outline-primary">List Files</button>
-      <button onclick="getAllDirsButtonClick('#treeNode','')"class="btn btn-sm btn-outline-primary">Get Dirs</button>
+      <button onclick="alert('not connected to anything!')"class="btn btn-sm btn-outline-primary">Get Dirs</button>
       </div>
     </div>
     <script>
@@ -83,7 +82,6 @@
     </script>
 
     <!-- You can also require other files to run in this process -->
-    <script src="js/treeNode.js"></script>
     <script src="./renderer.js"></script>
   </body>
 </html>

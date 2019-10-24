@@ -1,6 +1,7 @@
 var fs = require('fs');
 const path = require('path');
 const { readdirSync } = require('fs')
+const ipc = require('electron').ipcRenderer
 
 let $ = require('jquery');
 //var modal = require('./node_modules/bootstrap/js/dist/modal');
@@ -12,34 +13,24 @@ const app = remote.app;
 var levelDbDirectory = path.join(app.getPath('userData'),"Local Storage","leveldb");
 //var appsRootPath = app.getPath('appData');
 //documents, temp, appData, userData, ("C:\\windows\\system32\\"),
+
 var specialFoldersPath = null;
+
 // ## The following is document.onload via jquery
 $(function() {
-    $("#sourcePath").text(levelDbDirectory);
     handleSpecialFoldersChange();
     $("#specialFolders").change(function() {
         handleSpecialFoldersChange();    
     });
-    getInitialDirectories();
+
+    $("title").text($("title").text() + " - " + app.getVersion());
  });
- var allDirs = [];
- var rootTreeNodes = [];
- var folderId = 0;
- function getInitialDirectories(){
-     $("#treeNode").empty();
-     allDirs = getAllDirs(specialFoldersPath);
-     //addSubsAndClickHandlers("#treeNode");
-     rootTreeNodes = [];
-     let currentTreeNode = null;//new TreeNode({"parentId":null,"id":folderId++})
-     for (let zz = 0;zz < allDirs.length;zz++){
-        console.log(folderId);
-        currentTreeNode = new TreeNode({"parentId":null,"id":folderId++})
-        
-        currentTreeNode.addChildName(allDirs[zz].replace("\'", ""));
-        rootTreeNodes.push(currentTreeNode);
-     }
-     renderNodes(rootTreeNodes,"#treeNode");
- }
+
+ //Getting back the information after selecting the file
+ ipc.on('selected-file', function (event, path) {
+    //do what you want with the path/file selected, for example:
+    $('#selected-file').text(`You selected: ${path}`);
+ });
 
  function renderNodes(nodes,targetNodeSelector){
      console.log("nodes.length : " + nodes.length);
@@ -112,16 +103,6 @@ $(function() {
     }
  }
 
- function getAllDirsButtonClick(elementSelector,folder){
-     var mainPath = path.join(specialFoldersPath,folder);
-     console.log(mainPath);
-     allDirs = getAllDirs(mainPath);
-     for (let x = 0; x<allDirs.length;x++){
-         appendListNode(elementSelector,allDirs[x]);
-     }
-     handleToggle(folder);
- }
-
  function getAllDirs(path){
     //const getDirectories = source =>
     return readdirSync(path, { withFileTypes: true })
@@ -129,54 +110,11 @@ $(function() {
       .map(dirent => dirent.name);
  }
 
-
-function addSubFoldersToParent(clickedElement,folder){
-    console.log("clickedElement.id :" + clickedElement.id);
-    let subpath = path.join(specialFoldersPath,clickedElement.id,folder);
-    console.log(subpath);
-    let localParent = null;
-    if ($("#"+clickedElement.id).hasClass("hasExpanded") == false){
-    $("#"+clickedElement.id).addClass("hasExpanded");
-    console.log(subpath);
-    allDirs = getAllDirs(subpath);
-    console.log("allDirs.length: " + allDirs.length);
-    for (let k = 0;k <allDirs.length;k++){
-            if (k == 0){
-                localParent=clickedElement.id+k;
-                $("#"+clickedElement.id).append("<ul id=\"" + localParent + "\" class=\"nested\"></ul>");
-            }
-            appendListNode("#"+ localParent, allDirs[k])
-        }
-    }
-    clickedElement.parentElement.querySelector(".nested").classList.toggle("active");
-    clickedElement.classList.toggle("caret-down");
-    
-}
-
-function handleToggle(folder){
-    var toggler = document.getElementsByClassName("caret");
-    console.log("There are " + toggler.length + " toggler items.");
-    var i;
-    for (i = 0; i < toggler.length; i++) {
-        toggler[i].addEventListener("click", function() {
-            console.log("clicked...");
-            try{
-                //alert(this.id);
-                addSubFoldersToParent(this,folder);
-            }
-            catch{
-                return;
-            }
-        });
-    }
-}
-
 function handleSpecialFoldersChange(){
     clearSelectList("#PathListBox");
     specialFoldersPath = app.getPath($("#specialFolders").val());
     $("#appsRootPath").text(specialFoldersPath);
     getSubPaths(specialFoldersPath);
-    getInitialDirectories();
 }
 
 async function getSubPaths(path){
@@ -188,7 +126,6 @@ async function getSubPaths(path){
         //listing all files using forEach
         files.forEach(function (file) {
             // Do whatever you want to do with the file
-            console.log(file); 
             var localOption = new Option(file, file, false, true);
             $('#PathListBox').append($(localOption) );
             // LATER - allFiles.push(file);
