@@ -63,5 +63,15 @@ ipc.on('open-file-dialog', function (event) {
   })
 })
 
+ipc.on('open-save-dialog', function (event) {
+  dialog.showSaveDialog({
+    title: "Choose target file",
+    defaultPath: specialFoldersPath,
+  }, function (file) {
+    if (file) event.sender.send('saved-file', file)
+  })
+})
+
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

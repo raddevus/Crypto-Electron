@@ -20,6 +20,8 @@
     </div>
     <button class="btn btn-sm btn-outline-primary" onclick="ipc.send('open-file-dialog')">Select File</button>
     <div id="selected-file"></div>
+    <button class="btn btn-sm btn-outline-primary" onclick="ipc.send('open-save-dialog')">Save File</button>
+    <div id="saved-file"></div>
     <div class="form-group">
     <select id="specialFolders" class="form-control">
         <option value="appData">appData</option>

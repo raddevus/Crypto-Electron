@@ -32,6 +32,13 @@ $(function() {
     $('#selected-file').text(`You selected: ${path}`);
  });
 
+ //Getting back the information after selecting the file
+ ipc.on('saved-file', function (event, path) {
+    //do what you want with the path/file selected, for example:
+    $('#saved-file').text(`Output file is : ${path}`);
+ });
+
+
  function renderNodes(nodes,targetNodeSelector){
      console.log("nodes.length : " + nodes.length);
     for (let x = 0;x < nodes.length;x++){
