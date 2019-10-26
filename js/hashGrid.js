@@ -160,17 +160,18 @@ function ComputeHashBytes(textBasedPassword){
     let hashValue = "";
     console.log("computing hash...");
     console.log(us.PointValue);
-	if (textBasedPassword !== undefined ||
-		textBasedPassword !== null ||
-		textBasedPassword !== ""){
-        
-        console.log("selectedItemText : " + textBasedPassword);
+	if (textBasedPassword == undefined ||
+		textBasedPassword == null){
+			textBasedPassword = "";
+		}
+	console.log("selectedItemText : " + textBasedPassword);
+	if (us.PointValue > 0){
 	    hashValue = sha256(us.PointValue.toString() + textBasedPassword);
         console.log(hashValue);
-    }
-    else{
-        hashValue = sha256(us.PointValue.toString());
-    }
+	}
+	else{
+		hashValue = sha256(textBasedPassword);
+	}
 	pwd = hashValue;
 }
 
