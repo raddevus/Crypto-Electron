@@ -9,49 +9,50 @@
 
   </head>
   <body>
-
       <div id="formBody" class="row">
           <div class="col-sm-6" >
-            <h3 class="cyaHeader">1. Select (or Add) Site/Key</h3>
-            <select id="SiteListBox" size="10"></select>
-            <div class="topPad">
-             <button type="button" class="btn btn-sm btn-outline-primary" onclick="addButtonClick()">Add</button>
-             <button type="button" class="btn btn-sm btn-outline-primary" onclick="editButtonClick()">Edit</button>
-             <button type="button" class="btn btn-sm btn-outline-primary" onclick="deleteButtonClick()">Delete</button>
-            </div>
-            
-            <form class="form-inline">
-              <div class="input-group">
-                <label class="input-group-addon"><input id="addUppercaseCheckBox" type="checkbox" value=""><strong> Add UpperCase</strong></label>
-                <label id="noshow" class="form-control" ></label>
-              </div>
-              <div class="input-group">
-                <label class="input-group-addon"><input id="addSpecialCharsCheckBox" type="checkbox" value=""><strong> Add Special Chars</strong></label>
-                <input class="form-control" id="specialChars" placeholder="special chars">
-              </div>
-              <div class="input-group">
-                <label class="input-group-addon"><input id="maxLengthCheckBox" type="checkbox" value=""><strong> Max Length</strong></label>
-                <input type = "number" max="64" min="0" class="form-control" id="maxLength" value="32">
-              </div>
-            </form>
+              <h3 class="appHeader">1. Draw a pattern</h3>
+              <canvas id="mainGrid">You're browser does not support HTML5.</canvas>
+               <div class="input-group mb-3 topPad">
+                   <div class="input-group-prepend">
+                     <div class="input-group-text">
+                       <input type="checkbox" id="hidePatternCheckBox">
+                     </div>
+                     <span class="form-control input-type-text" ><strong>Hide Pattern</strong></span>
+                   </div>
+                   
+                 <button type="button" class="btn btn-sm btn-outline-primary" onclick="clearButtonClick()">Clear</button>
+               </div>
           </div>
           <div class="col-sm-6" >
-          <h3 class="cyaHeader">2. Draw a pattern</h3>
-          <canvas id="mainGrid">You're browser does not support HTML5.</canvas>
-           <div class="input-group mb-3 topPad">
-               <div class="input-group-prepend">
-                 <div class="input-group-text">
-                   <input type="checkbox" id="hidePatternCheckBox">
-                 </div>
-                 <span class="form-control input-type-text" ><strong>Hide Pattern</strong></span>
-               </div>
-               
-             <button type="button" class="btn btn-sm btn-outline-primary" onclick="clearButtonClick()">Clear</button>
-           </div>
+              <h3 class="appHeader">2. Select source file (cleartext)</h3>
+              <div class="topPad">
+                <button class="btn btn-sm btn-outline-primary" onclick="ipc.send('open-file-dialog')">Select File</button>
+                <div id="selected-file"></div>
+              </div>
+              <div class="topPad">
+                <h3 class="appHeader">3. Select target file (encrypted)</h3>
+                <button class="btn btn-sm btn-outline-primary" onclick="ipc.send('open-save-dialog')">Save File</button>
+                <div id="saved-file"></div>
+              </div>
+              <form class="form-inline">
+                <div class="input-group">
+                  <label class="input-group-addon"><input id="addUppercaseCheckBox" type="checkbox" value=""><strong> Add UpperCase</strong></label>
+                  <label id="noshow" class="form-control" ></label>
+                </div>
+                <div class="input-group">
+                  <label class="input-group-addon"><input id="addSpecialCharsCheckBox" type="checkbox" value=""><strong> Add Special Chars</strong></label>
+                  <input class="form-control" id="specialChars" placeholder="special chars">
+                </div>
+                <div class="input-group">
+                  <label class="input-group-addon"><input id="maxLengthCheckBox" type="checkbox" value=""><strong> Max Length</strong></label>
+                  <input type = "number" max="64" min="0" class="form-control" id="maxLength" value="32">
+                </div>
+              </form>
           </div>
         </div>
        </div>
-       
+      </div>
        <script src="js/sha256.js"></script>
     <div>
     We are using Node.js <span id="node-version"></span>,
@@ -63,10 +64,6 @@
     </div>
     <div id="decrypted">
     </div>
-    <button class="btn btn-sm btn-outline-primary" onclick="ipc.send('open-file-dialog')">Select File</button>
-    <div id="selected-file"></div>
-    <button class="btn btn-sm btn-outline-primary" onclick="ipc.send('open-save-dialog')">Save File</button>
-    <div id="saved-file"></div>
     <div class="form-group">
     <select id="specialFolders" class="form-control">
         <option value="appData">appData</option>
