@@ -249,7 +249,6 @@ function initGrid(){
 }
 
 function clearButtonClick(){
-	pwd = "";
 	us = new UserPath();
 	drawBackground();
 	generateAllPosts();
@@ -257,26 +256,30 @@ function clearButtonClick(){
 	drawPosts();
 	$("#hidePatternCheckBox").attr('checked',false);
 	$("#hidePatternCheckBox").prop('checked',false)
+
+	if ($("#textBasedPasswordCheckBox").attr('checked') || $("#textBasedPasswordCheckBox").prop('checked')){
+		generatePassword();
+		return;
+	}
+	pwd = "";
+	
 }
 
 function generatePassword(){
-	//return;
-	// if (us.allSegments.length <=0 && (!$("#textBasedPasswordCheckBox").attr('checked') || !$("#textBasedPasswordCheckBox").prop('checked')))
-	// {
-	// 	pwd = "";
-	// 	return;
-	// }
+	
+	if (us.allSegments.length <=0 && 
+		(!$("#textBasedPasswordCheckBox").attr('checked') && !$("#textBasedPasswordCheckBox").prop('checked')))
+	{
+		pwd = "";
+	 	return;
+	}
 	if (us.allSegments.length <= 0 && $("#textBasedPassword").val() == "")
 	{
 		pwd = "";
 		return;
     }
-    
-    // 1. use password text box to generate first hash
-    //if (passwordText has value in it)
-     //compute with password text ==> ComputeHashBytes(passwordTextBox Value);
-     
-     if ($("#textBasedPasswordCheckBox").attr('checked') || $("#textBasedPasswordCheckBox").prop('checked')){
+
+	if ($("#textBasedPasswordCheckBox").attr('checked') || $("#textBasedPasswordCheckBox").prop('checked')){
 		 let currentPwd = $("#textBasedPassword").val();
 		 console.log("currentPwd : " + currentPwd);
          ComputeHashBytes(currentPwd);
@@ -286,13 +289,7 @@ function generatePassword(){
          ComputeHashBytes(undefined);
      }
 	console.log("ComputeHashBytes() : " + pwd);
-	
 	console.log ("pwd 1: " + pwd);
-	
-	// $("#userPasswordText").val(pwd);
-	// $("#UserPasswordText").select();
-	// document.execCommand("copy");
-	// $("#ItemToFocusOne").focus();
 }
 
 // #######################
