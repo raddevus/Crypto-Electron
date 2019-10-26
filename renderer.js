@@ -78,7 +78,6 @@ $(function() {
 
  }
 
-
  function addSubsAndClickHandlers(parentNodeSelector){
     for (let x = 0; x<allDirs.length;x++){
         appendListNode(parentNodeSelector,allDirs[x])

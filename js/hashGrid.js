@@ -237,7 +237,9 @@ function initGrid(){
 	ctx.canvas.width = ctx.canvas.height;
 	
 	$("#hidePatternCheckBox").on('change', drawUserShape);
-
+	$("#textBasedPasswordCheckBox").on('change', generatePassword);
+	$("#textBasedPassword").on('input', generatePassword);
+	
 	theCanvas.addEventListener("mousedown", mouseDownHandler);
 	drawBackground();
 	generateAllPosts();
@@ -257,9 +259,15 @@ function clearButtonClick(){
 }
 
 function generatePassword(){
-    //return;
-	if (us.allSegments.length <= 0)
+	//return;
+	// if (us.allSegments.length <=0 && (!$("#textBasedPasswordCheckBox").attr('checked') || !$("#textBasedPasswordCheckBox").prop('checked')))
+	// {
+	// 	pwd = "";
+	// 	return;
+	// }
+	if (us.allSegments.length <= 0 && $("#textBasedPassword").val() == "")
 	{
+		pwd = "";
 		return;
     }
     
@@ -267,8 +275,10 @@ function generatePassword(){
     //if (passwordText has value in it)
      //compute with password text ==> ComputeHashBytes(passwordTextBox Value);
      
-     if (false){
-         ComputeHashBytes("test");
+     if ($("#textBasedPasswordCheckBox").attr('checked') || $("#textBasedPasswordCheckBox").prop('checked')){
+		 let currentPwd = $("#textBasedPassword").val();
+		 console.log("currentPwd : " + currentPwd);
+         ComputeHashBytes(currentPwd);
      }
      else{
          // compute with only the drawn pattern.
