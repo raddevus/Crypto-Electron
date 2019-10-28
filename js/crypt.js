@@ -7,6 +7,7 @@ let decrypted = "";
 let key = "";
 let iv = "";
 let clearText = "This is a an extremely long message <strong> with </strong> CRLF \n and other items in it.";
+let isEncrypting = true;
 
 function encryptData(data){
     if (data !== undefined && data != ""){
@@ -22,25 +23,36 @@ function encryptData(data){
     return encrypted;
 }
 
-function decryptData(){
+function decryptData(data){
+    if (data !== undefined && data != ""){
+        encrypted = data;
+    }
+    key = CryptoJS.enc.Hex.parse(pwd);
+    iv = CryptoJS.enc.Hex.parse(pwd.slice(0,32));
     decrypted = CryptoJS.AES.decrypt(encrypted,  key, { iv: iv });
     //var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret");
     console.log("decrypted: " + decrypted.toString());
     let clearTextOut = decodeHexString(decrypted.toString());
     console.log(clearTextOut);
     document.getElementById("decrypted").innerHTML = clearTextOut;
+    return decrypted;
 }
 
-function encryptFile(fileData){
-    clearText = fileData;
+function encryptFile(){
+    isEncrypting = true;
     if (pwd != ""){
-        readClearTextFile();
+        createOutputFileFromInputData();
     }
 }
 
-let EncryptedFileData = "";
+function decryptFile(){
+    isEncrypting = false;
+    if (pwd != ""){
+        createOutputFileFromInputData();
+    }
+}
 
-function readClearTextFile(){
+function createOutputFileFromInputData(){
     var currentSelectedFile = $('#selected-file').text();
     if (currentSelectedFile == null){
         return;
@@ -49,10 +61,14 @@ function readClearTextFile(){
     fs.readFile(currentSelectedFile, 'ascii', function (err, data) {
         if (err) return console.log(err);
         console.log("read the file!");
-        fileData = data;
-        encryptedFileData = encryptData(data);
-        processFile();
-        writeEncryptedFile(encryptedFileData);
+        if (isEncrypting){
+            outputFileData = encryptData(data);
+        }
+        else{
+            outputFileData = decryptData(data);
+        }
+        //processFile();
+        writeTargetFile(outputFileData);
     });
 }
 

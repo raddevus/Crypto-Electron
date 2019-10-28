@@ -33,7 +33,7 @@ $(function() {
  //Getting back the information after selecting the file
  ipc.on('saved-file', function (event, path) {
     //do what you want with the path/file selected, for example:
-    $('#saved-file').text(`Output file is : ${path}`);
+    $('#saved-file').text(`${path}`);
  });
 
 function processFile(){
@@ -41,10 +41,10 @@ function processFile(){
     console.log(fileData);
 }
 
-function writeEncryptedFile(encryptedFileData){
-    var outFile = path.join(app.getAppPath(), 'myfile.enc');
+function writeTargetFile(targetData){
+    var outFile = $("#saved-file").text();//path.join(app.getAppPath(), 'myfile.enc');
     console.log(outFile);
-    try { fs.writeFileSync(outFile, encryptedFileData, 'ascii'); }
+    try { fs.writeFileSync(outFile, targetData, 'ascii'); }
     catch(e) { alert('Failed to save the file !'); }
 }
 
