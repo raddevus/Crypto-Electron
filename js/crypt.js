@@ -33,8 +33,10 @@ function decryptData(data){
     //var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret");
     console.log("decrypted: " + decrypted.toString());
     let clearTextOut = decodeHexString(decrypted.toString());
-    console.log(clearTextOut);
-    document.getElementById("decrypted").innerHTML = clearTextOut;
+    if (clearTextOut.length <= 200){
+        console.log(clearTextOut);
+        document.getElementById("decrypted").innerHTML = clearTextOut;
+    }
     return clearTextOut;
 }
 
