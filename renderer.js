@@ -19,11 +19,6 @@ var specialFoldersPath = null;
 // ## The following is document.onload via jquery
 $(function() {
     initGrid();
-    handleSpecialFoldersChange();
-    $("#specialFolders").change(function() {
-        handleSpecialFoldersChange();    
-    });
-
     $("title").text($("title").text() + " - " + app.getVersion());
  });
 
@@ -55,10 +50,6 @@ $(function() {
     }
  }
 
- function addNewListHtml(){
-
- }
-
  function appendListNode(targetNode, nodeName){
      console.log("targetName : " + targetNode);
     return ($("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>").appendTo(targetNode));
@@ -66,16 +57,11 @@ $(function() {
     //return ($(targetNode).append("<li><span id=\"" + nodeName + "\" class=\"caret\">" + nodeName + "</span></li>"));
  }
  
-
  function addNodeClickHandler(nodeSelector){
     $(nodeSelector).on("click", function() 
         {   
             alert($(nodeSelector).id);
         });
- }
-
- function nodeClickHandler(){
-
  }
 
  function addSubsAndClickHandlers(parentNodeSelector){
@@ -117,14 +103,10 @@ $(function() {
       .map(dirent => dirent.name);
  }
 
-function handleSpecialFoldersChange(){
-    clearSelectList("#PathListBox");
-    specialFoldersPath = app.getPath($("#specialFolders").val());
-    $("#appsRootPath").text(specialFoldersPath);
-    getSubPaths(specialFoldersPath);
-}
-
 async function getSubPaths(path){
+    // ########################################################
+    // ############### TO BE REMOVED / ALTERED ################
+    // ######################################################## 
     fs.readdir(path, function (err, files) {
         //handling error
         if (err) {

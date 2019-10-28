@@ -57,41 +57,7 @@
     </div>
     <div id="decrypted">
     </div>
-    <div class="form-group">
-    <select id="specialFolders" class="form-control">
-        <option value="appData">appData</option>
-        <option value="desktop">Desktop</option>
-        <option value="documents">Documents</option>
-        <option value="downloads">Downloads</option>
-        <option value="home">Home</option>
-        <option value="music">Music</option>
-        <option value="pictures">Pictures</option>
-        <option value="temp">Temp</option>
-        <option value="userData">userData</option>
-        <option value="videos">Videos</option>
-      </select>
-    </div>
     <h5 id="appsRootPath">placeholder</h5>
-    <div id="formBody" class="row">
-        <div class="col-sm-8" >
-          <select id="PathListBox" 
-            class="RadListBox form-control" 
-            size="5">
-          </select>
-        </div>
-    </div>
-    <h5 id="sourcePath"></h5>
-    <div id="formBody" class="row">
-      <div class="col-sm-8" >
-      <select id="FileListBox" 
-        class="RadListBox form-control" 
-        size="5">
-      </select>
-      <button onclick="readFile()"class="btn btn-sm btn-outline-primary">Encrypt</button>
-      <button onclick="getFileList()"class="btn btn-sm btn-outline-primary">List Files</button>
-      <button onclick="alert('not connected to anything!')"class="btn btn-sm btn-outline-primary">Get Dirs</button>
-      </div>
-    </div>
     <script>
         var plainText = "This is a an extremely long message <strong> with </strong> CRLF \n and other items in it.";
         var key = CryptoJS.enc.Hex.parse('76CE9BBA9487266738E3C4F0B3CFA4BE0C0EBA52ED1C3C425E06900442EFE5E1'); 
