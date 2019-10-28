@@ -35,7 +35,7 @@ function decryptData(data){
     let clearTextOut = decodeHexString(decrypted.toString());
     console.log(clearTextOut);
     document.getElementById("decrypted").innerHTML = clearTextOut;
-    return decrypted;
+    return clearTextOut;
 }
 
 function encryptFile(){
