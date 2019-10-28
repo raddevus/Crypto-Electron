@@ -1,8 +1,8 @@
 
 function encryptDecryptTest(){
     var plainText = "This is a an extremely long message <strong> with </strong> CRLF \n and other items in it.";
-    var key = CryptoJS.enc.Hex.parse('76CE9BBA9487266738E3C4F0B3CFA4BE0C0EBA52ED1C3C425E06900442EFE5E1'); 
-    var iv = CryptoJS.enc.Hex.parse('76CE9BBA9487266738E3C4F0B3CFA4BE'); 
+    var key = CryptoJS.enc.Hex.parse(pwd);
+    var iv = CryptoJS.enc.Hex.parse(pwd.slice(0,32));
     var encrypted = CryptoJS.AES.encrypt(plainText, key, { iv: iv }); 
     //var encrypted = CryptoJS.AES.encrypt(plainText, "Secret"); 
     //var cipherText = CryptoJS.enc.Hex.parse(String(encrypted.ciphertext));
@@ -14,6 +14,12 @@ function encryptDecryptTest(){
     let plainTextOut = decodeHexString(decrypted.toString());
     console.log(plainTextOut);
     document.getElementById("decrypted").innerHTML = plainTextOut;
+}
+
+function encryptFile(){
+    if (pwd != ""){
+        encryptDecryptTest();
+    }
 }
 
 function decodeHexString(stringOfHexBytes){
