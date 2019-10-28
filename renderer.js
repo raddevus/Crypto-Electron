@@ -1,6 +1,6 @@
 var fs = require('fs');
 const path = require('path');
-const { readdirSync } = require('fs')
+const { readdirSync } = require('fs');
 const ipc = require('electron').ipcRenderer
 
 let $ = require('jquery');
@@ -20,13 +20,14 @@ var specialFoldersPath = null;
 $(function() {
     initGrid();
     $("title").text($("title").text() + " - " + app.getVersion());
-    encryptDecryptTest();
+    encryptData();
+    decryptData();
  });
 
  //Getting back the information after selecting the file
  ipc.on('selected-file', function (event, path) {
     //do what you want with the path/file selected, for example:
-    $('#selected-file').text(`You selected: ${path}`);
+    $('#selected-file').text(`${path}`);
  });
 
  //Getting back the information after selecting the file
@@ -35,34 +36,15 @@ $(function() {
     $('#saved-file').text(`Output file is : ${path}`);
  });
 
-function readFile(){
-    var currentSelectedFile = $('#FileListBox').val();
-    if (currentSelectedFile == null){
-        return;
-    }
-    
-    var fileFullName = path.join(levelDbDirectory, currentSelectedFile);
-    alert(fileFullName);
-    fs.readFile(fileFullName, 'ascii', function (err, data) {
-        if (err) return console.log(err);
-        console.log("read the file!");
-        fileData = data;
-
-        processFile();
-        writeEncryptedFile();
-    });
-}
-
 function processFile(){
     console.log("FILESIZE (bytes) : " + fileData.length);
     console.log(fileData);
 }
 
-function writeEncryptedFile(){
-    listFilesInPath(levelDbDirectory);
-    var outFile = path.join(app.getAppPath(), 'myfile.log');
+function writeEncryptedFile(encryptedFileData){
+    var outFile = path.join(app.getAppPath(), 'myfile.enc');
     console.log(outFile);
-    try { fs.writeFileSync(outFile, fileData, 'ascii'); }
+    try { fs.writeFileSync(outFile, encryptedFileData, 'ascii'); }
     catch(e) { alert('Failed to save the file !'); }
 }
 
