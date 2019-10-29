@@ -9,6 +9,7 @@ let iv = "";
 let clearText = "This is a an extremely long message <strong> with </strong> CRLF \n and other items in it.";
 let isEncrypting = true;
 let decryptionIsSuccess = true;
+const DECRYPTION_ERROR_MSG = "ERROR!: Most likely you are using an incorrect password to decrypt the file with.";
 
 function encryptData(data){
     if (data !== undefined && data != ""){
@@ -72,12 +73,20 @@ function decryptDataBuffer(data){
     console.log("decrypted: " + decrypted.toString());
     clearTextOut = decodeHexString(decrypted.toString());
     try{
-    clearTextOut = atob(clearTextOut);
+        clearTextOut = atob(clearTextOut);
+        // ## It can successfully decode bytes but then those bytes
+        // ## are actually equal to an empty string.  That's an error 
+        // ## that is related to using the wrong password.
+        if (clearTextOut.length <= 0){
+            decryptionIsSuccess = false;
+            alert(DECRYPTION_ERROR_MSG);
+            console.log(DECRYPTION_ERROR_MSG);
+        }
     }
     catch{
         decryptionIsSuccess = false;
-        console.log("ERROR!: Most likely you are using an incorrect password to decrypt the file with.");
-        alert("ERROR!: Most likely you are using an incorrect password to decrypt the file with.");
+        console.log(DECRYPTION_ERROR_MSG);
+        alert(DECRYPTION_ERROR_MSG);
     }
     //clearTextOut = clearTextOut.substring(0,clearTextOut.length);
     if (clearTextOut.length <= 200){
@@ -128,7 +137,6 @@ function createOutputFileFromInputData(){
             else{
                 outputFileData = decryptDataBuffer(data.base64Slice(0,data.length));
             }
-            //processFile();
             if (decryptionIsSuccess){
                 writeTargetFile(outputFileData);
             }
