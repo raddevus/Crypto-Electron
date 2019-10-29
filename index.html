@@ -6,7 +6,6 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script src="js/hashGrid.js"></script>
     <script src="js/aes.js"></script>
-
   </head>
   <body>
       <div id="formBody" class="row">
@@ -24,8 +23,8 @@
                </div>
           </div>
           <div class="col-sm-6" >
-              <h3 class="appHeader">2. Select source file (cleartext)</h3>
-              <div class="topPad">
+            <h3 class="appHeader">2. Select source file (cleartext)</h3>
+            <div class="topPad">
                 <button class="btn btn-sm btn-outline-primary" onclick="ipc.send('open-file-dialog')">Select File</button>
                 <div id="selected-file"></div>
               <div class="topPad">
@@ -42,12 +41,10 @@
                 </div>
               </form>
               <div class="topPad">
-                  <h3 class="appHeader">5. Encrypt source to target file.</h3>
-                  <button class="btn btn-sm btn-outline-primary" onclick="encryptFile()">Encrypt</button>
-                  <button class="btn btn-sm btn-outline-primary" onclick="decryptFile()">Decrypt</button>
-                  <label class="input-group-addon">
-                  <input id="useDataBufferCheckBox" type="checkbox" value=""><strong>Use Buffer</strong></label>
-                </div>
+                <h3 class="appHeader">5. Encrypt source to target file.</h3>
+                <button class="btn btn-sm btn-outline-primary" onclick="encryptFile()">Encrypt</button>
+                <button class="btn btn-sm btn-outline-primary" onclick="decryptFile()">Decrypt</button>
+            </div>
           </div>
         </div>
        </div>

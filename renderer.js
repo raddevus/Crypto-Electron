@@ -20,8 +20,8 @@ var specialFoldersPath = null;
 $(function() {
     initGrid();
     $("title").text($("title").text() + " - " + app.getVersion());
-    encryptData();
-    decryptData();
+    encryptDataBuffer();
+    decryptDataBuffer();
  });
 
  //Getting back the information after selecting the file
