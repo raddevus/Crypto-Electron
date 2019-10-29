@@ -43,6 +43,7 @@ function processFile(){
 
 function writeTargetFile(targetData){
     var outFile = $("#saved-file").text();//path.join(app.getAppPath(), 'myfile.enc');
+    alert(outFile);
     console.log(outFile);
     try { fs.writeFileSync(outFile, targetData, 'ascii'); }
     catch(e) { alert('Failed to save the file !'); }

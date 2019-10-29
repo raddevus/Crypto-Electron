@@ -26,7 +26,12 @@ function encryptData(data){
 function encryptDataBuffer(data){
     if (data !== undefined && data != ""){
         clearText = data;
+        console.log("data.charCodeAt(0) : " +data.charCodeAt(0));
+        console.log("clearText.charCodeAt(0) : " +clearText.charCodeAt(0));
+        console.log("clearText.length : " + clearText.length);
+        console.log("data.length : " + data.length);
     }
+    
     key = CryptoJS.enc.Hex.parse(pwd);
     iv = CryptoJS.enc.Hex.parse(pwd.slice(0,32));
     encrypted = CryptoJS.AES.encrypt(clearText, key, { iv: iv }); 
@@ -53,6 +58,26 @@ function decryptData(data){
     }
     return clearTextOut;
 }
+let clearTextOut = "";
+function decryptDataBuffer(data){
+    if (data !== undefined && data != ""){
+        encrypted = atob(data);
+        console.log("encrypted.length : " + encrypted.length);
+    }
+    key = CryptoJS.enc.Hex.parse(pwd);
+    iv = CryptoJS.enc.Hex.parse(pwd.slice(0,32));
+    decrypted = CryptoJS.AES.decrypt(encrypted,  key, { iv: iv });
+    //var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret");
+    console.log("decrypted: " + decrypted.toString());
+    clearTextOut = decodeHexString(decrypted.toString());
+    clearTextOut = atob(clearTextOut);
+    //clearTextOut = clearTextOut.substring(0,clearTextOut.length);
+    if (clearTextOut.length <= 200){
+        console.log(clearTextOut);
+        document.getElementById("decrypted").innerHTML = clearTextOut;
+    }
+    return clearTextOut;
+}
 
 function encryptFile(){
     isEncrypting = true;
@@ -68,6 +93,7 @@ function decryptFile(){
     }
 }
 let xdata = undefined;
+let xdataString = undefined;
 function createOutputFileFromInputData(){
     var currentSelectedFile = $('#selected-file').text();
     if (currentSelectedFile == null){
@@ -79,11 +105,19 @@ function createOutputFileFromInputData(){
             if (err) return console.log(err);
             console.log("read the file!");
             xdata = data;
+            // let dataString = new String();
+            // console.log("1 - ### data.length : " + data.length);
+            // for (let idx = 0; idx < data.length;idx++){
+            //     dataString += String.fromCharCode(data.readUIntBE(idx,1));
+            // }
+            
             if (isEncrypting){
-                outputFileData = encryptDataBuffer(data.asciiSlice(0,data.length));
+                // xdataString = dataString.substring(0,dataString.length);
+                // outputFileData = encryptDataBuffer(dataString.substring(0,dataString.length));
+                outputFileData = encryptDataBuffer(data.base64Slice(0,data.length));
             }
             else{
-                outputFileData = decryptData(data);
+                outputFileData = decryptDataBuffer(data.base64Slice(0,data.length));
             }
             //processFile();
             writeTargetFile(outputFileData);
