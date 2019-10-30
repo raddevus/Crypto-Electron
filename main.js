@@ -55,7 +55,7 @@ app.on('activate', function () {
 let specialFoldersPath = app.getPath('appData');
 ipc.on('open-file-dialog', function (event) {
   dialog.showOpenDialog({
-    properties: ['openFiles'],
+    properties: ['openFile'],
     defaultPath: specialFoldersPath,
     
   }, function (files) {
