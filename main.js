@@ -58,8 +58,8 @@ ipc.on('open-file-dialog', function (event) {
     properties: ['openFile'],
     defaultPath: specialFoldersPath,
     
-  }, function (files) {
-    if (files) event.sender.send('selected-file', files)
+  }).then((files) =>  {
+    if (files) event.sender.send('selected-file', files.filePaths)
   })
 })
 
@@ -67,8 +67,8 @@ ipc.on('open-save-dialog', function (event) {
   dialog.showSaveDialog({
     title: "Choose target file",
     defaultPath: specialFoldersPath,
-  }, function (file) {
-    if (file) event.sender.send('saved-file', file)
+  }).then((data) => {
+    if (data.filePath) event.sender.send('saved-file', data.filePath)
   })
 })
 
