@@ -23,9 +23,9 @@
     "electron-builder": "^21.2.0"
   },
   "dependencies": {
-    "bootstrap": "^4.3.1",
-    "jquery": "^3.5.0",
-    "minimist": ">=1.2.3"
+    "bootstrap": "^4.5.2",
+    "jquery": "^3.5.1",
+    "minimist": "^1.2.5"
   },
   "build": {
     "appId": "app.actionmobile.crypto",
