@@ -17,26 +17,9 @@ let decryptionIsSuccess = true;
 const DECRYPTION_ERROR_MSG = "ERROR!: Most likely you are using an incorrect password to decrypt the file with.";
 
 function doEncrypt(){
-//     var crypto = require('crypto');
-
-// var mykey = crypto.createCipher('aes-128-cbc', 'mypassword');
-// resizedIV = Buffer.allocUnsafe(16);
-//         var iv = crypto
-//          .createHash("sha256")
-//          .update("a")
-//          .digest();
-// var cipher = createCipheriv("aes256",'mypasswrod',iv);
-// var mystr = mykey.update('abc', 'utf8', 'hex')
-// mystr += mykey.final('hex');
-
-// console.log(mystr);
-
-
-const key = Crypto.createHash("sha256").update("a").digest();
-const iv = Crypto.createHash("sha256").update("a").digest();
-
-
-    iv.copy(resizedIV);
+    const key = Crypto.createHash("sha256").update("a").digest();
+    const iv = Crypto.createHash("sha256").update("a").digest();
+    iv.copy(key);
 
     console.log(resizedIV);
     console.log(iv);
@@ -54,75 +37,72 @@ const iv = Crypto.createHash("sha256").update("a").digest();
     
     var hexString = msg.join("").toUpperCase();
     console.log(hexString);
-    console.log(Buffer.from(hexString).toString('base64'));
+    console.log(Buffer.from(hexString));
 
     
 
 }
 
 function encryptDataBuffer(data){
-    // if (data !== undefined && data != ""){
-    //     clearText = data;
-    //     console.log("data.charCodeAt(0) : " +data.charCodeAt(0));
-    //     console.log("clearText.charCodeAt(0) : " +clearText.charCodeAt(0));
-    //     console.log("clearText.length : " + clearText.length);
-    //     console.log("data.length : " + data.length);
-    // }
-    // create a buffer for the 16-byte iv
-    cipher = Crypto.createCipheriv("aes256", pwd, pwd.slice(0,32));
+
+    var localPwd = document.querySelector("#textBasedPassword").value;
+    const key = Crypto.createHash("sha256").update(localPwd).digest();
+    const iv = Buffer.allocUnsafe(16);
+    // copies only 16 bytes of the key into iv
+    key.copy(iv);
+
+    console.log(iv);
+    cipher = Crypto.createCipheriv("aes-256-cbc", key,iv);
     // 1. encrypt the byes (call final())
     // 2. return base64 of encrypted bytes
-    cipher.update(data, "binary", "binary")
-    return cipher.final(data,"utf8").toString("base64");
-    // key = CryptoJS.enc.Hex.parse(pwd);
-    // iv = CryptoJS.enc.Hex.parse(pwd.slice(0,32));
-    // encrypted = CryptoJS.AES.encrypt(clearText, key, { iv: iv }); 
-    // //var encrypted = CryptoJS.AES.encrypt(clearText, "Secret"); 
-    // //var cipherText = CryptoJS.enc.Hex.parse(String(encrypted.ciphertext));
-    // //console.log("cipherText : " + cipherText);
-    // document.getElementById("encrypted").innerHTML = encrypted;
-    // return encrypted;
+    var x = convertByteDataToString(data);
+    console.log("x : " + x.length);
+    var msg = [];
+    msg.push(cipher.update(data, "binary", "base64"));//, "binary", "hex");
+    //console.log(data);
+    msg.push(cipher.final("base64"));
+    return msg.join("");
 }
+
+function convertByteDataToString(data){
+    var outString = "";
+    for (var i =0;i<data.length;i++){
+        outString += String.fromCharCode(data[i]);
+    }
+    return outString;
+}
+ 
 
 let clearTextOut = "";
 
 function decryptDataBuffer(data){
-    if (data !== undefined && data != ""){
-        encrypted = atob(data);
-        console.log("encrypted.length : " + encrypted.length);
-    }
-    key = CryptoJS.enc.Hex.parse(pwd);
-    iv = CryptoJS.enc.Hex.parse(pwd.slice(0,32));
-    decrypted = CryptoJS.AES.decrypt(encrypted,  key, { iv: iv });
-    //var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret");
-    console.log("decrypted: " + decrypted.toString());
-    clearTextOut = decodeHexString(decrypted.toString());
-    try{
-        clearTextOut = atob(clearTextOut);
-        // ## It can successfully decode bytes but then those bytes
-        // ## are actually equal to an empty string.  That's an error 
-        // ## that is related to using the wrong password.
-        if (clearTextOut.length <= 0){
-            decryptionIsSuccess = false;
-            alert(DECRYPTION_ERROR_MSG);
-            console.log(DECRYPTION_ERROR_MSG);
-        }
-    }
-    catch{
-        decryptionIsSuccess = false;
-        console.log(DECRYPTION_ERROR_MSG);
-        alert(DECRYPTION_ERROR_MSG);
-    }
-    //clearTextOut = clearTextOut.substring(0,clearTextOut.length);
-    if (clearTextOut.length <= 200){
-        console.log(clearTextOut);
-        document.getElementById("decrypted").innerHTML = clearTextOut;
-    }
-    return clearTextOut;
+    // var encryptedBuffer = null;
+    // if (data !== undefined && data != ""){
+    //     encrypted = atob(data);
+    //     console.log("encrypted.length : " + encrypted.length);
+    //     console.log(encrypted);
+    //     encryptedBuffer = Buffer.from(encrypted, 'ascii' );
+    //     console.log(encryptedBuffer);
+    // }
+
+    var localPwd = document.querySelector("#textBasedPassword").value;
+    console.log(localPwd);
+    const key = Crypto.createHash("sha256").update(localPwd).digest();
+    const iv = Buffer.allocUnsafe(16);
+    // copies only 16 bytes of the key into iv
+    key.copy(iv);
+    var msg = [];
+    console.log(iv);
+    cipher = Crypto.createDecipheriv("aes-256-cbc", key, iv);
+    // 1. encrypt the byes (call final())
+    // 2. return base64 of encrypted bytes
+    msg.push(cipher.update(data, "base64", "binary"));//, "hex", "binary");
+    //console.log(data);
+    msg.push(cipher.final("binary"));
+    return msg.join("");
 }
 
 function encryptFile(){
-    doEncrypt(); return;
     isEncrypting = true;
     if (pwd != ""){
         createOutputFileFromInputData();
@@ -162,11 +142,17 @@ function createOutputFileFromInputData(){
         if (isEncrypting){
             // xdataString = dataString.substring(0,dataString.length);
             // outputFileData = encryptDataBuffer(dataString.substring(0,dataString.length));
-            // outputFileData = encryptDataBuffer(data);
-            doEncrypt();
+            outputFileData = encryptDataBuffer(data);
+            //outputFileData = encryptDataBuffer("this is the data that I'm done with for now and now this is even longer to see how long it will matter and to see if it makes a difference with 100 percent help")
+            console.log(outputFileData);
+            //outputFileData = atob(outputFileData.toString());
+            //console.log(outputfileData);
         }
         else{
-            outputFileData = decryptDataBuffer(data.base64Slice(0,data.length));
+            var base64Data = data.toString("utf8");
+            console.log(base64Data);
+            outputFileData = decryptDataBuffer(base64Data);
+            
         }
         if (decryptionIsSuccess){
             writeTargetFile(outputFileData);
