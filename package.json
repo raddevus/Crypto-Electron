@@ -1,6 +1,6 @@
 {
   "name": "Crypto-Electron",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "Electron project to investigate file encryption via AES-256",
   "main": "main.js",
   "scripts": {
@@ -25,7 +25,8 @@
   "dependencies": {
     "bootstrap": "^4.5.2",
     "jquery": "^3.5.1",
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.5",
+    "dot-prop": ">=4.2.1"
   },
   "build": {
     "appId": "app.actionmobile.crypto",
