@@ -1,8 +1,5 @@
 
 var fs = require('fs');
-//var Crypto = require('crypto');
-//const { readFile } = require('fs');
-const Crypto = require('crypto');
 
 const resizedIV = Buffer.allocUnsafe(16);
 
@@ -15,33 +12,6 @@ let clearText = btoa("This is a an extremely long message <strong> with </strong
 let isEncrypting = true;
 let decryptionIsSuccess = true;
 const DECRYPTION_ERROR_MSG = "ERROR!: Most likely you are using an incorrect password to decrypt the file with.";
-
-function doEncrypt(){
-    const key = Crypto.createHash("sha256").update("a").digest();
-    const iv = Crypto.createHash("sha256").update("a").digest();
-    iv.copy(key);
-
-    console.log(resizedIV);
-    console.log(iv);
-    
-    console.log(key);
-    const cipher = Crypto.createCipheriv("aes-256-cbc", key, resizedIV);
-    console.log(cipher);
-    var msg = [];
-
-        console.log("a");
-        msg.push(cipher.update("a", "binary", "hex"));
-    
-    console.log(msg.length);
-    msg.push(cipher.final("hex"));
-    
-    var hexString = msg.join("").toUpperCase();
-    console.log(hexString);
-    console.log(Buffer.from(hexString));
-
-    
-
-}
 
 function encryptDataBuffer(data){
 

@@ -1,3 +1,5 @@
+const Crypto = require('crypto');
+
 // #######################
 var centerPoint = 50;
 var postWidth = 6;
@@ -166,11 +168,11 @@ function ComputeHashBytes(textBasedPassword){
 		}
 	console.log("selectedItemText : " + textBasedPassword);
 	if (us.PointValue > 0){
-	    hashValue = sha256(us.PointValue.toString() + textBasedPassword);
+	    hashValue = Crypto.createHash("sha256").update(us.PointValue.toString() + textBasedPassword).digest().toString("hex");
         console.log(hashValue);
 	}
 	else{
-		hashValue = sha256(textBasedPassword);
+		hashValue = Crypto.createHash("sha256").update(textBasedPassword).digest().toString("hex");
 	}
 	pwd = hashValue;
 }
