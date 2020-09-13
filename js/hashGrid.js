@@ -11,6 +11,7 @@ var allPosts = [];
 var postOffset = Math.trunc(postSize / 2)
 var us = new UserPath();
 let pwd = "";
+let pwdBuffer = null;
 
 function Point (p){
 	this.x = p.x || -1;
@@ -168,11 +169,13 @@ function ComputeHashBytes(textBasedPassword){
 		}
 	console.log("selectedItemText : " + textBasedPassword);
 	if (us.PointValue > 0){
-	    hashValue = Crypto.createHash("sha256").update(us.PointValue.toString() + textBasedPassword).digest().toString("hex");
+		pwdBuffer = Crypto.createHash("sha256").update(us.PointValue.toString() + textBasedPassword).digest();
+		hashValue = pwdBuffer.toString("hex");
         console.log(hashValue);
 	}
 	else{
-		hashValue = Crypto.createHash("sha256").update(textBasedPassword).digest().toString("hex");
+		pwdBuffer = Crypto.createHash("sha256").update(textBasedPassword).digest();
+		hashValue = pwdBuffer.toString("hex");
 	}
 	pwd = hashValue;
 }
