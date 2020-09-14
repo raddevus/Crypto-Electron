@@ -4,35 +4,40 @@ const { readdirSync } = require('fs');
 const ipc = require('electron').ipcRenderer
 
 let $ = require('jquery');
-//var modal = require('./node_modules/bootstrap/js/dist/modal');
-//window.$ = $;
+let userDataPath = "";
+let appVersion = "";
 
-const remote = require('electron').remote;
-const app = remote.app;
+ipc.on('getAppPath-reply', (event, arg) => {
+    userDataPath = arg;
+});
 
-var levelDbDirectory = path.join(app.getPath('userData'),"Local Storage","leveldb");
-//var appsRootPath = app.getPath('appData');
-//documents, temp, appData, userData, ("C:\\windows\\system32\\"),
+ipc.on('getVersion-reply', (event, arg) => {
+    appVersion = arg;
+    $("title").text($("title").text() + " - " + appVersion);
+});
+
+ipc.send('getAppPath','userData');
+
+ipc.send('getVersion', null);
+
+var levelDbDirectory = path.join(userDataPath,"Local Storage","leveldb");
 
 var specialFoldersPath = null;
 
 // ## The following is document.onload via jquery
 $(function() {
     initGrid();
-    $("title").text($("title").text() + " - " + app.getVersion());
  });
 
- //Getting back the information after selecting the file
- ipc.on('selected-file', function (event, path) {
-    //do what you want with the path/file selected, for example:
+//Getting back the information after selecting the file
+ipc.on('selected-file', function (event, path) {
     $('#selected-file').text(`${path}`);
- });
+});
 
- //Getting back the information after selecting the file
- ipc.on('saved-file', function (event, path) {
-    //do what you want with the path/file selected, for example:
+//Getting back the information after selecting the file
+ipc.on('saved-file', function (event, path) {
     $('#saved-file').text(`${path}`);
- });
+});
 
 function processFile(){
     console.log("FILESIZE (bytes) : " + fileData.length);
@@ -40,12 +45,9 @@ function processFile(){
 }
 
 function writeTargetFile(targetData){
-    var outFile = $("#saved-file").text();//path.join(app.getAppPath(), 'myfile.enc');
+    var outFile = $("#saved-file").text();
     alert(outFile);
     console.log(outFile);
     try { fs.writeFileSync(outFile, targetData, 'ascii'); }
     catch(e) { alert('Failed to save the file !'); }
 }
-
-console.log(app.getPath('userData') );
-console.log(app.getAppPath() );

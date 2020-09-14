@@ -72,6 +72,10 @@ ipc.on('open-save-dialog', function (event) {
   })
 })
 
+ipc.on('getAppPath', (event, arg) => {
+  event.reply('getAppPath-reply', app.getPath(arg));
+})
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+ipc.on('getVersion', (event, arg) => {
+  event.reply('getVersion-reply', app.getVersion());
+});
