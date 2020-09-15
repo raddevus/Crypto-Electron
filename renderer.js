@@ -6,7 +6,7 @@ const ipc = require('electron').ipcRenderer
 let userDataPath = "";
 let appVersion = "";
 
-ipc.on('getAppPath-reply', (event, arg) => {
+ipc.on('getPath-reply', (event, arg) => {
     userDataPath = arg;
 });
 
@@ -16,7 +16,7 @@ ipc.on('getVersion-reply', (event, arg) => {
     document.querySelector("title").innerHTML = currentTitle + " - " + appVersion;
 });
 
-ipc.send('getAppPath','userData');
+ipc.send('getPath','userData');
 
 ipc.send('getVersion', null);
 
@@ -24,9 +24,26 @@ var levelDbDirectory = path.join(userDataPath,"Local Storage","leveldb");
 
 var specialFoldersPath = null;
 
+function replaceText(selector, text){
+	const element = document.querySelector("#"+selector)
+	if (element){ element.innerText = text;}
+} 
+
+function updateDetails(){	
+	for (const type of ['chrome', 'node', 'electron']) {
+		replaceText(`${type}-version`, process.versions[type]);
+	}
+}
+
+ipc.on('getAppPath-reply', (event, arg) => {
+	// arg is appDataPath as string
+	replaceText(`app-path`,arg);
+});
 
 ipc.on("html-loaded", (event, args)=>{
     initGrid();
+    updateDetails();
+    ipc.send('getAppPath',null);
 });
 
 //Getting back the information after selecting the file

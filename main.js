@@ -16,7 +16,6 @@ function createWindow () {
     icon: 'crypto.png',
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js')
     }
   })
 
@@ -77,10 +76,14 @@ ipc.on('open-save-dialog', function (event) {
   })
 })
 
-ipc.on('getAppPath', (event, arg) => {
-  event.reply('getAppPath-reply', app.getPath(arg));
+ipc.on('getPath', (event, arg) => {
+  event.reply('getPath-reply', app.getPath(arg));
 })
 
 ipc.on('getVersion', (event, arg) => {
   event.reply('getVersion-reply', app.getVersion());
+});
+
+ipc.on('getAppPath', (event, args) => {
+  event.reply('getAppPath-reply', app.getPath('userData'));
 });
