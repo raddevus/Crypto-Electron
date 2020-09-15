@@ -13,7 +13,8 @@ ipc.on('getAppPath-reply', (event, arg) => {
 
 ipc.on('getVersion-reply', (event, arg) => {
     appVersion = arg;
-    $("title").text($("title").text() + " - " + appVersion);
+    var currentTitle = document.querySelector("title").innerHTML;
+    document.querySelector("title").innerHTML = currentTitle + " - " + appVersion;
 });
 
 ipc.send('getAppPath','userData');
@@ -24,19 +25,19 @@ var levelDbDirectory = path.join(userDataPath,"Local Storage","leveldb");
 
 var specialFoldersPath = null;
 
-// ## The following is document.onload via jquery
-$(function() {
+
+ipc.on("html-loaded", (event, args)=>{
     initGrid();
- });
+});
 
 //Getting back the information after selecting the file
 ipc.on('selected-file', function (event, path) {
-    $('#selected-file').text(`${path}`);
+    document.querySelector("#selected-file").innerHTML = `${path}`;
 });
 
 //Getting back the information after selecting the file
 ipc.on('saved-file', function (event, path) {
-    $('#saved-file').text(`${path}`);
+    document.querySelector("#saved-file").innerHTML = `${path}`;
 });
 
 function processFile(){
@@ -45,7 +46,7 @@ function processFile(){
 }
 
 function writeTargetFile(targetData){
-    var outFile = $("#saved-file").text();
+    var outFile = document.querySelector("#saved-file").innerHTML;
     alert(outFile);
     console.log(outFile);
     try { fs.writeFileSync(outFile, targetData, 'ascii'); }
