@@ -3,7 +3,6 @@ const path = require('path');
 const { readdirSync } = require('fs');
 const ipc = require('electron').ipcRenderer
 
-let $ = require('jquery');
 let userDataPath = "";
 let appVersion = "";
 

@@ -113,7 +113,7 @@ function getMousePos(evt) {
 }
 
 function mouseDownHandler(event){
-	if ($("#hidePatternCheckBox").attr('checked') || $("#hidePatternCheckBox").prop('checked')){
+	if (document.querySelector("#hidePatternCheckBox").checked || document.querySelector("#hidePatternCheckBox").checked){
 			// get out of here because the user has the pattern hidden
 			// user must unhide pattern to add to it.
 			return;
@@ -146,7 +146,7 @@ function drawHighlight(){
 }
 
 function drawUserShape(){
-	if (!$("#hidePatternCheckBox").attr('checked') && !$("#hidePatternCheckBox").prop('checked')){
+	if (!document.querySelector("#hidePatternCheckBox").checked && !document.querySelector("#hidePatternCheckBox").checked){
 		for (var i = 0; i < us.allSegments.length;i++){
 			drawLine(us.allSegments[i].Begin, us.allSegments[i].End, "green", 4, true);
 		}
@@ -242,9 +242,9 @@ function initGrid(){
 	ctx.canvas.height  = 255;
 	ctx.canvas.width = ctx.canvas.height;
 	
-	$("#hidePatternCheckBox").on('change', drawUserShape);
-	$("#textBasedPasswordCheckBox").on('change', generatePassword);
-	$("#textBasedPassword").on('input', generatePassword);
+	document.querySelector("#hidePatternCheckBox").addEventListener('change', drawUserShape);
+	document.querySelector("#textBasedPasswordCheckBox").addEventListener('change', generatePassword);
+	document.querySelector("#textBasedPassword").addEventListener('input', generatePassword);
 	
 	theCanvas.addEventListener("mousedown", mouseDownHandler);
 	drawBackground();
@@ -259,10 +259,10 @@ function clearButtonClick(){
 	generateAllPosts();
 	drawGridLines();
 	drawPosts();
-	$("#hidePatternCheckBox").attr('checked',false);
-	$("#hidePatternCheckBox").prop('checked',false)
+	document.querySelector("#hidePatternCheckBox").checked = false;
+	document.querySelector("#hidePatternCheckBox").checked = false;
 
-	if ($("#textBasedPasswordCheckBox").attr('checked') || $("#textBasedPasswordCheckBox").prop('checked')){
+	if (document.querySelector("#textBasedPasswordCheckBox").checked || document.querySelector("#textBasedPasswordCheckBox").checked){
 		generatePassword();
 		return;
 	}
@@ -273,19 +273,19 @@ function clearButtonClick(){
 function generatePassword(){
 	
 	if (us.allSegments.length <=0 && 
-		(!$("#textBasedPasswordCheckBox").attr('checked') && !$("#textBasedPasswordCheckBox").prop('checked')))
+		(!document.querySelector("#textBasedPasswordCheckBox").checked && !document.querySelector("#textBasedPasswordCheckBox").checked))
 	{
 		pwd = "";
 	 	return;
 	}
-	if (us.allSegments.length <= 0 && $("#textBasedPassword").val() == "")
+	if (us.allSegments.length <= 0 && document.querySelector("#textBasedPassword").value == "")
 	{
 		pwd = "";
 		return;
     }
 
-	if ($("#textBasedPasswordCheckBox").attr('checked') || $("#textBasedPasswordCheckBox").prop('checked')){
-		 let currentPwd = $("#textBasedPassword").val();
+	if (document.querySelector("#textBasedPasswordCheckBox").checked || document.querySelector("#textBasedPasswordCheckBox").checked){
+		 let currentPwd = document.querySelector("#textBasedPassword").value;
 		 console.log("currentPwd : " + currentPwd);
          ComputeHashBytes(currentPwd);
      }
