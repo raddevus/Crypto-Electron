@@ -44,10 +44,17 @@ function processFile(){
     console.log(fileData);
 }
 
-function writeTargetFile(targetData){
+function writeTargetFile(targetData, isEncrypting){
     var outFile = document.querySelector("#saved-file").innerHTML;
-    alert(outFile);
-    console.log(outFile);
+    
+    var outMsg = "Successfully ";
+    if (isEncrypting){
+        outMsg += "encrypted ";
+    }
+    else{ outMsg+="decrypted ";}
+    outMsg += outFile;
+    console.log(outMsg);
+    alert(outMsg);
     try { fs.writeFileSync(outFile, targetData, 'ascii'); }
     catch(e) { alert('Failed to save the file !'); }
 }

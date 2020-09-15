@@ -82,11 +82,11 @@ function decryptFile(){
 
 function createOutputFileFromInputData(){
     decryptionIsSuccess = true;
-    var currentSelectedFile = $('#selected-file').text();
+    var currentSelectedFile = document.querySelector('#selected-file').innerHTML;
     if (currentSelectedFile == null){
         return;
     }
-    alert(currentSelectedFile);
+    alert("Processing file... " + currentSelectedFile);
     
     fs.readFile(currentSelectedFile, function (err, data) {
         if (err) return console.log(err);
@@ -100,7 +100,7 @@ function createOutputFileFromInputData(){
             outputFileData = decryptDataBuffer(base64Data);
         }
         if (decryptionIsSuccess){
-            writeTargetFile(outputFileData);
+            writeTargetFile(outputFileData, isEncrypting);
         }
     });
 }
