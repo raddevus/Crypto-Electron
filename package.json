@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.5.2",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "dot-prop": ">=4.2.1"
   },
   "build": {
