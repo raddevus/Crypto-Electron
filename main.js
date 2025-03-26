@@ -13,9 +13,10 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: 'crypto.png',
+    icon: __dirname + '/crypto.png',
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false // Disable context isolation
     }
   })
 
