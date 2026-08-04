@@ -20,7 +20,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^39.8.5",
-    "electron-builder": "^26.7.0"
+    "electron-builder": "^26.15.3"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
